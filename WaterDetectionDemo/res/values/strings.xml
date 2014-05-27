@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Underwater Demo</string>
+    <string name="unsupported_title">Unsupported device</string>
+    <string name="unsupported_message">This demo app is only suitable for use with Sony Xperia phones</string>
+    <string name="ok">OK</string>
+    
+</resources>

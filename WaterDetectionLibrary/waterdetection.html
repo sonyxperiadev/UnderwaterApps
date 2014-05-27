@@ -1,0 +1,40 @@
+<html>
+<head>
+<style>body{ font-family: sans-serif;}</style>
+<title>Water Detector</title>
+</head>
+<body>
+
+<h1>Water Detector</h1>
+
+<h2>Problem</h2>
+<p>Detect if phone is under water. This is a binary classification problem where we are only interested in differentiating between two states - in air, or under water - as opposed to detecting the event of the device being submerged, or the current depth.</p>
+
+<h2>Approach</h2>
+<p>Lack of a dedicated water sensor limited us to computer-vision and sound-based solutions, where computer-vision was ruled out as infeasible and also unwanted from a privacy point. Sound can be recorded from both the main microphone and the back-facing one. A tone is generated as a reference and the recordings can be compared between microphones and states in both time and frequency domains. To make detection independent of application, the generated tone is in the ultra-sound range and hence not audible. In the absence of an acoustic model for the phone, the proper way to address this problem is to view it as a supervised machine learning problem.</p>
+
+<h2>Solution</h2>
+<p>The approach outlined above requires us to obtain labeled data, i.e. a set of feature values and the corresponding state.</p>
+
+<h2>Data Collection</h2>
+<p>To obtain data, a 22 KHz is generated procedurally, played in mono, and recorded at 44 KHz in stereo so as to activate both microphones. The two channels are then separated and respective samples are run through a 512 bin FFT whereafter the resulting spectrum is log-normalised and inserted in a 100 frame spectrogram. Several features of the two spectrograms are computed: the mean and max values, and the variances for both channels computed for the slice of bins closest to the Nyquist frequency, i.e. the generated tone. Together with the average amplitudes during spectrogram generation, we obtain 8 feature values per generation used for classification. An additional feature is computed from the difference in amplitudes between channels.</p>
+
+<h2>Machine Learning</h2>
+<p>The learning model is a one-layer neural network, i.e. a perceptron with 9 inputs and two outputs, one for each state. The state with highest output value is considered to be the current one.</p>
+<img src="detector_network.png"/>
+
+<p>A set of pre-trained biases and weights are stored in the app for online state classification. To minimise error, three consecutive classifications of a particular state must be recorded before switching to this state.</p>
+
+<h2>Limitations</h2>
+The solution has been developed and tested with the following assumptions:
+<ul>
+<li>The app is started out of water and with microphones and speaker being dry.</li>
+<li>Both microphones and speaker remain uncovered during the entire procedure.</li>
+<li>The phone is fully submerged in the water state.</li>
+<li>All phones have identical hardware specifications w.r.t sound generation and recording.</li>
+<li>The user must not use headphones or turn on silent mode. This will violate the assumed Android audio policy.</li>
+<li>Background noise is moderate and consistent.</li>
+</ul>
+
+</body>
+</html>

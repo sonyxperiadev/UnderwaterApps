@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.motim.waterdetectiondemo"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
+
+    <!-- Required for audio input to water detector -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    
+    <!-- Required for setting volume for measurement tone generator -->
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        <activity
+            android:name="com.motim.waterdetectiondemo.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="sensorPortrait">
+        </activity>
+        <activity
+            android:name="com.motim.waterdetectiondemo.LegalActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="sensorPortrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
